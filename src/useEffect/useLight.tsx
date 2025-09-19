@@ -52,7 +52,29 @@ export const useLight = () => {
   }, [count, light]);
 
   //!retornamos el contador, la luz actual y los colores para usarlos en el componente TrafficLightWithEffect
-  return { count, light, colors };
+  return {
+    //ORDEN DE LOS RETORNOS POR CONVENCION
+
+    //PRIMERO LAS PROPS O ESTADOS QUE PUEDEN CAMBIAR
+    //!PROPS
+    count,
+    light,
+    colors,
+    //SEGUNDO CALCULOS QUE SE HACEN EN EL MOMENTO POR EJEMPLO UN PORCENTAJE
+    //!COMPUTED
+    //!ESTOS CALCULOS SE HACEN AQUI PARA MANTENER EL COMPONENTE LIMPIO (ES MEJOR HACERLO AQUI QUE EN EL COMPONENTE AUNQUE ES OPCIONAL)
+    //calculamos el porcentaje para la barra de progreso del semaforo
+    percentage: (count / 5) * 100,
+    //!clases de los colores del semaforo segun la luz actual (light) para usarlas en el componente
+    //verificamos el color actual y si es el mismo que light le asignamos el color correspondiente del objeto colors si no le asignamos bg-gray-500 para que se vea apagado
+    greenLight: light === "green" ? colors.green : "bg-gray-500",
+    redLight: light === "red" ? colors.red : "bg-gray-500",
+    yellowLight: light === "yellow" ? colors.yellow : "bg-gray-500",
+
+    //TERCERO LAS FUNCIONES O METODOS QUE MODIFICAN EL ESTADO o HACEN ALGO
+    //!METHODS
+    // no tenemos metodos en este caso
+  };
 };
 
 //?Consejos

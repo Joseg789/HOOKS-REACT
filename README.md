@@ -2,6 +2,15 @@
 
 Este proyecto demuestra el uso de Hooks en React.
 
+# Stack usado
+
+-Vite
+-React
+-Typescript + swc
+-Taildwindcss
+
+-git (para manejar los repositorios)
+
 ## Descarga del proyecto
 
 1. Haz clic en el botón **Code** y selecciona **Download ZIP**.
@@ -38,3 +47,5 @@ si te ha servido dejame ⭐⭐⭐⭐⭐ son gratis
 3. sigueme en linkedin
 
    [https://www.linkedin.com/in/jose-sanchez-8a11b0314/]
+
+### SI TIENES ALGUNA DUDA CONTACTAME POR LINKEDIN

@@ -5,6 +5,7 @@ import "./index.css";
 // import { TrafficLight } from './useState/TrafficLight';
 // import { TrafficLightWithEffect } from "./useEffect/TrafficLightWithEffect";
 import { PokemonPage } from "./ejemplos/pokemonPage/PokemonPage";
+import FocusScreen from "./useRef/FocusScreen";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -20,6 +21,9 @@ createRoot(document.getElementById("root")!).render(
 
     {/* <TrafficLightWithEffect /> */}
 
-    <PokemonPage />
+    {/* <PokemonPage /> */}
+
+    {/* useref */}
+    <FocusScreen />
   </StrictMode>
 );

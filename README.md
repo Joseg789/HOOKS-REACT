@@ -48,4 +48,15 @@ si te ha servido dejame ⭐⭐⭐⭐⭐ son gratis
 
    [https://www.linkedin.com/in/jose-sanchez-8a11b0314/]
 
+4. En src estan los directorios de cada hook
+   - dentro de cada hook encontraras un archivo info donde tendras mas informacion relacionada con el hook
+
+### IMPORTANTE
+
+\*\*\* EN EL MAIN.TSX DE NUESTRO PROYECTO ESTAN COMENTADOS ALGUNOS COMPONENTS
+
+- SI DESEAS VER EL FUNCIONAMIENTO DE USESTATE() DESCOMENTA EL COMPONENT ASOCIADO AL USESTATE()
+- Y COMENTA LOS QUE NO ESTES VIENDO
+- PUEDES DESCOMENTARLOS TODOS PERO PARA QUE TENGAS UN MEJOR ORDEN ES MEJOR QUE VEAS UNO POR EL HOOK QUE TE INTERESE
+
 ### SI TIENES ALGUNA DUDA CONTACTAME POR LINKEDIN

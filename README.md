@@ -1,69 +1,40 @@
-# React + TypeScript + Vite
+# Proyecto React Hooks
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Este proyecto demuestra el uso de Hooks en React.
 
-Currently, two official plugins are available:
+## Descarga del proyecto
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+1. Haz clic en el botón **Code** y selecciona **Download ZIP**.
+2. Extrae el archivo ZIP en tu computadora.
 
-## Expanding the ESLint configuration
+O clona el repositorio con Git:
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      ...tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      ...tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      ...tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+git clone https://github.com/usuario/repositorio.git
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+## Instalación
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+1. Abre una terminal en la carpeta del proyecto.
+2. Instala las dependencias con:
 
-export default tseslint.config([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```bash
+npm install
 ```
+
+## Ejecución
+
+1. Inicia la aplicación con:
+
+```bash
+npm run dev
+```
+
+2. Abre tu navegador y visita [http://localhost:5173/]
+
+¡Listo! Ahora puedes explorar el proyecto y aprender sobre React Hooks.
+si te ha servido dejame ⭐⭐⭐⭐⭐ son gratis
+
+3. sigueme en linkedin
+
+   [https://www.linkedin.com/in/jose-sanchez-8a11b0314/]

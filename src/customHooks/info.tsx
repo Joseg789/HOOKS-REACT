@@ -59,6 +59,7 @@ function CounterComponent() {
     </div>
   );
 }
+export default CounterComponent;
 
 /**
  * 7. Recursos:

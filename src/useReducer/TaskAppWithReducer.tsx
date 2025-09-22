@@ -1,4 +1,4 @@
-import { useReducer, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 //imports de shadcn
 import { Plus, Trash2, Check } from "lucide-react";
 //importamos los components que nos crea shadcn
@@ -8,7 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import taskReducer, { getInitialState } from "./taskReducer";
 
-export const TasksApp = () => {
+export const TasksAppWithReducer = () => {
   const [inputValue, setInputValue] = useState(""); //state para la caja de texto donde escribimos la tarea
 
   //! USANDO EL REDUCER QUE CREAMOS
@@ -17,14 +17,20 @@ export const TasksApp = () => {
   const [state, dispatch] = useReducer(taskReducer, getInitialState());
   //!EXTRAEMOS LOS DATOS DEL ESTADO QUE NOS DEVUELVE useReducer
   const { todos, completed: completedCount, pending: totalCount } = state;
+  //guardamos en local storage cada vez que el estado de las tareas cambia
+  useEffect(() => {
+    //usamos JSON.stringify para convertir el array de tareas en un string
+    //!no guardar informacion sensible en local storage
+    localStorage.setItem("tasks_app", JSON.stringify(todos));
+  }, [todos]);
   const addTodo = () => {
     if (inputValue.length === 0) return; //si el input no contiene texto noo hacemos nada
+    dispatch({ type: "ADD_TODO", payload: inputValue }); //le pasamos el texto de la tarea como payload
+    //guardar en local storage
+
+    //vaciamos la caja de texto
+    setInputValue("");
   };
-
-  dispatch({ type: "ADD_TODO", payload: inputValue }); //le pasamos el texto de la tarea como payload
-
-  //vaciamos la caja de texto
-  setInputValue("");
 
   const toggleTodo = (id: number) => {
     // le pasamos el id a dispatch para cambiar el estado completado de la tarea
@@ -90,14 +96,16 @@ export const TasksApp = () => {
             <CardContent className="pt-0">
               <div className="flex items-center justify-between text-sm text-slate-600 mb-2">
                 <span>
-                  {completedCount} de {totalCount} completadas
+                  {completedCount} de {todos.length} completadas
                 </span>
-                <span>{Math.round((completedCount / totalCount) * 100)}%</span>
+                <span>
+                  {Math.round((completedCount / todos.length) * 100)}%
+                </span>
               </div>
               <div className="w-full bg-slate-200 rounded-full h-2">
                 <div
                   className="bg-gradient-to-r from-green-400 to-green-500 h-2 rounded-full transition-all duration-300 ease-out"
-                  style={{ width: `${(completedCount / totalCount) * 100}%` }}
+                  style={{ width: `${(completedCount / todos.length) * 100}%` }}
                 />
               </div>
             </CardContent>

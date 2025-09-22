@@ -1,7 +1,6 @@
 // reducer para manejar las tareas
 
 import { useReducer } from "react";
-import react from "@vitejs/plugin-react-swc";
 
 // interface para las tareas
 interface Todo {
@@ -10,7 +9,7 @@ interface Todo {
   completed: boolean;
 }
 //! un payload es un dato extra que puede llevar una accion
-
+// interface para el estado del reducer
 interface TaskState {
   todos: Todo[]; //el estado es un array de tareas
   length: number; // cantidad de tareas
@@ -20,9 +19,9 @@ interface TaskState {
 
 // acciones para el reducer
 export type TaskAction =
-  //usamos un union type para las acciones con |
   //!cada accion tiene un type y puede tener un payload
   //ADD_TODO (agregar tarea) | TOGGLE_TODO (cambiar estado completado) | DELETE_TODO (eliminar tarea)
+
   | { type: "ADD_TODO"; payload: string } //las acciones pueden tener un payload o no
   | { type: "TOGGLE_TODO"; payload: number } //!las acciones en MAYUSCULAS por convencion
   | { type: "DELETE_TODO"; payload: number };
@@ -30,11 +29,24 @@ export type TaskAction =
 // estado inicial
 export const getInitialState = (): TaskState => {
   //funcion que retorna el estado inicial
+  const storedTodos = localStorage.getItem("tasks_app");
+  if (storedTodos) {
+    //JSON.parse convierte un string a un objeto o array EN ESTE CASO UN ARRAY DE TAREAS
+    //!DEBEMOS VALIDAR QUE NUESTROS DATOS EN LOCAL STORAGE SEAN VALIDOS ANTES DE PARSEARLOS
+    const todos: Todo[] = JSON.parse(storedTodos); //convertimos el string a un array de tareas
+    return {
+      todos,
+      length: todos.length,
+      completed: todos.filter((todo) => todo.completed).length,
+      pending: todos.filter((todo) => !todo.completed).length,
+    };
+  }
+  //si no hay tareas en local storage retornamos un estado inicial vacio
   return {
     todos: [],
     length: 0,
     completed: 0,
-    pending: 0,
+    pending: 0, //inicialmente no hay tareas pendientes
   };
 };
 
@@ -67,30 +79,41 @@ const taskReducer = (state: TaskState, action: TaskAction): TaskState => {
           if (todo.id === action.payload) {
             //evaluamos si la tarea esta completada la cambiamos a pendiente y viceversa y actualizamos los contadores
             if (todo.completed) {
+              state.completed = state.completed - 1;
               state.pending = state.pending + 1;
             } else {
               state.completed = state.completed + 1;
+              state.pending = state.pending - 1;
             }
-            todo.completed = !todo.completed; //cambiamos el estado aqui para no repetir codigo **DRY*
+            //retornamos la tarea con el estado completado cambiado
+            //!es importante recordar que un todo es un  objeto en cada retorno
+            //!cuando usamos el spred operator copiamos las propiedades del objeto todo y luego cambiamos la propiedad completed
+            return { ...todo, completed: !todo.completed }; //cambiamos el estado de completado
           }
           return todo;
         }),
       };
+
     case "DELETE_TODO": //eliminar tarea
       //!usamos filter para crear un nuevo array sin la tarea que queremos eliminar
+      //elimninamos el todo
+      const currentTodos = state.todos.filter(
+        (todo) => todo.id !== action.payload
+      );
+      //actualizamos los contadores
+      const completedTodos = currentTodos.filter(
+        (todo) => todo.completed
+      ).length; //actualizamos la cantidad de tareas completadas
+      //la cantidad de tareas pendientes es la cantidad total de tareas menos las completadas
+      const pendingTodos = currentTodos.length - completedTodos; //actualizamos la cantidad de tareas pendientes
       return {
-        ...state,
-        todos: state.todos.filter((todo) => {
-          if (todo.id === action.payload) {
-            //si el id de la tarea es igual al payload de la acción entonces actualizamos los contadores
-            if (todo.completed)
-              state.completed - 1; // Decrementar tareas completadas
-            else state.pending - 1; // Decrementar tareas pendientes
-            state.length - 1; // Decrementar total de tareas
-          }
-          return todo; //retornamos la tarea si no es la que queremos eliminar
-        }),
+        ...state, //copiamos el estado actual
+        todos: currentTodos, //creamos un nuevo array sin la tarea que queremos eliminar
+        length: currentTodos.length, //decrementamos la cantidad de tareas
+        completed: completedTodos, //actualizamos la cantidad de tareas completadas
+        pending: pendingTodos, //actualizamos la cantidad de tareas pendientes
       };
+
     default: //si la acción no es reconocida retornamos el estado actual TAMBIEN PODRIAMOS LANZAR UN ERROR
       return state;
   }

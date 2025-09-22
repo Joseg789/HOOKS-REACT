@@ -2,6 +2,24 @@
 
 import { useReducer } from "react";
 
+//importamos zod  v4 para validar los datos de las tareas de local storage
+
+import * as z from "zod/v4"; //usaremos z version 4
+
+//creamos el schema para validar las tareas
+const TodoSchema = z.object({
+  id: z.number(), //el id es un numero
+  text: z.string().min(1), //el texto es un string minimo 1 caracter
+  completed: z.boolean(), //el completado es un booleano
+});
+//creamos el schema para validar el estado del reducer
+const TasksStateSchema = z.object({
+  todos: z.array(TodoSchema), //el estado es un array de tareas
+  length: z.number(), // cantidad de tareas
+  completed: z.number(), // tareas completadas
+  pending: z.number(), // tareas pendientes
+});
+
 // interface para las tareas
 interface Todo {
   id: number;
@@ -30,16 +48,24 @@ export type TaskAction =
 export const getInitialState = (): TaskState => {
   //funcion que retorna el estado inicial
   const storedTodos = localStorage.getItem("tasks_app");
+
   if (storedTodos) {
     //JSON.parse convierte un string a un objeto o array EN ESTE CASO UN ARRAY DE TAREAS
     //!DEBEMOS VALIDAR QUE NUESTROS DATOS EN LOCAL STORAGE SEAN VALIDOS ANTES DE PARSEARLOS
     const todos: Todo[] = JSON.parse(storedTodos); //convertimos el string a un array de tareas
-    return {
-      todos,
-      length: todos.length,
-      completed: todos.filter((todo) => todo.completed).length,
-      pending: todos.filter((todo) => !todo.completed).length,
-    };
+    //validamos los datos con zod
+    const parsed = TasksStateSchema.safeParse({
+      todos, //array de tareas
+      length: todos.length, //cantidad de tareas
+      completed: todos.filter((todo) => todo.completed).length, //cantidad de tareas completadas
+      pending: todos.filter((todo) => !todo.completed).length, //cantidad de tareas pendientes
+    });
+    if (parsed.error) {
+      //si hay un error en la validacion mostramos un error en consola y retornamos un estado inicial vacio
+      console.error("Error parsing tasks from localStorage:", parsed.error);
+    } else {
+      return parsed.data; //retornamos los datos validados
+    }
   }
   //si no hay tareas en local storage retornamos un estado inicial vacio
   return {

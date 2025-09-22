@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useReducer, useState } from "react";
 //imports de shadcn
 import { Plus, Trash2, Check } from "lucide-react";
 //importamos los components que nos crea shadcn
@@ -6,60 +6,34 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import taskReducer, { getInitialState } from "./taskReducer";
 
-//interface todo para manejar las tareas
-interface Todo {
-  id: number;
-  text: string;
-  completed: boolean;
-}
-
-//en este componente usamos los componentes que importamos de shadcn
-//tambien podemos personalizarlos a nuestras necesidades
 export const TasksApp = () => {
-  const [todos, setTodos] = useState<Todo[]>([]); //state para los todos
-  const [inputValue, setInputValue] = useState(""); //state para la caja de texto donde escribimos el todo
+  const [inputValue, setInputValue] = useState(""); //state para la caja de texto donde escribimos la tarea
 
+  //! USANDO EL REDUCER QUE CREAMOS
+  //! EL REDUCER NOS DEVUELVE UN ESTADO Y UN DISPATCH PARA ENVIAR ACCIONES AL REDUCER
+  //!EL REDUCER ES EL ENCARGADO DE GESTIONAR LA LOGICA DE NUESTRAS TAREAS Y ACTUALIZAR EL ESTADO
+  const [state, dispatch] = useReducer(taskReducer, getInitialState());
+  //!EXTRAEMOS LOS DATOS DEL ESTADO QUE NOS DEVUELVE useReducer
+  const { todos, completed: completedCount, pending: totalCount } = state;
   const addTodo = () => {
     if (inputValue.length === 0) return; //si el input no contiene texto noo hacemos nada
-    const newTodo: Todo = {
-      id: Date.now(), //FECHA DE HOY
-      text: inputValue.trim(), //eliminamos los espacios
-      completed: false,
-    };
-    //guardamos el todo
-    //los arreglos de estados no deben mutar
-    setTodos([...todos, newTodo]); ///guardamos los todos actuales + newvo todo
-    //!si no tenemos acceso a los todos porque estamos en otro contexto
-    //! setTodos((prev) => [...prev, newTodo]);//esto tambien es valido
-    //vaciamos la caja de texto
-    setInputValue("");
   };
-  //!siempre los states en react deben ser cambiados con sus funciones setState (funciones dispatcher)
+
+  dispatch({ type: "ADD_TODO", payload: inputValue }); //le pasamos el texto de la tarea como payload
+
+  //vaciamos la caja de texto
+  setInputValue("");
+
   const toggleTodo = (id: number) => {
-    //cambiamos el estado de la tarea
-    //usamos map para recorrer el array y cambiar el estado de la tarea que queremos cambiar
-    //sin mutar el estado original
-    //usamos el id para identificar la tarea que queremos cambiar
-    const newTodos = todos.map((todo) => {
-      if (todo.id === id) {
-        //si es la tarea que queremos cambiar entonces cambiamos su estado de completado o no
-        return { ...todo, completed: !todo.completed }; //cambiamos el estado de completado
-      }
-      return todo; //si no es la tarea que queremos cambiar devolvemos la tarea sin cambios
-    });
-    //actualizamos el estado
-    setTodos(newTodos);
+    // le pasamos el id a dispatch para cambiar el estado completado de la tarea
+    dispatch({ type: "TOGGLE_TODO", payload: id });
   };
 
   const deleteTodo = (id: number) => {
     //eliminamos la tarea
-    //! setTodos(todos.filter((todo) => todo.id !== id)); //filtramos todos los todos menos el que queremos eliminar
-    //otra forma de hacerlo
-    //setTodos((prev) => prev.filter((todo) => todo.id !== id));
-    //!otra forma de hacerlo mas explicita y legible
-    const newTodos = todos.filter((todo) => todo.id !== id);
-    setTodos(newTodos);
+    dispatch({ type: "DELETE_TODO", payload: id });
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
@@ -67,9 +41,6 @@ export const TasksApp = () => {
       addTodo();
     }
   };
-
-  const completedCount = todos.filter((todo) => todo.completed).length;
-  const totalCount = todos.length;
 
   return (
     // layout principal

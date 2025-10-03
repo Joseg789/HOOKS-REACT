@@ -1,5 +1,4 @@
-import { useState } from "react";
-
+// import { useState } from "react";
 /**
  * useState en React
  * =================
@@ -22,57 +21,57 @@ import { useState } from "react";
  * --------------------------
  */
 
-function Contador() {
-  const [contador, setContador] = useState(0);
+// // function Contador() {
+//   const [contador, setContador] = useState(0);
 
-  return (
-    <div>
-      <p>Valor: {contador}</p>
-      <button onClick={() => setContador(contador + 1)}>Incrementar</button>
-      <button onClick={() => setContador(contador - 1)}>Decrementar</button>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <p>Valor: {contador}</p>
+//       <button onClick={() => setContador(contador + 1)}>Incrementar</button>
+//       <button onClick={() => setContador(contador - 1)}>Decrementar</button>
+//     </div>
+//   );
+// }
 
 /**
  * Ejemplo 2: Estado con string
  * ----------------------------
  */
 
-function Saludo() {
-  const [nombre, setNombre] = useState("José");
+// function Saludo() {
+//   const [nombre, setNombre] = useState("José");
 
-  return (
-    <div>
-      <p>Hola, {nombre}</p>
-      <input value={nombre} onChange={(e) => setNombre(e.target.value)} />
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <p>Hola, {nombre}</p>
+//       <input value={nombre} onChange={(e) => setNombre(e.target.value)} />
+//     </div>
+//   );
+// }
 
-/**
- * Ejemplo 3: Estado con objeto
- * ----------------------------
- */
+// /**
+//  * Ejemplo 3: Estado con objeto
+//  * ----------------------------
+//  */
 
-function Usuario() {
-  const [usuario, setUsuario] = useState({ nombre: "", edad: 0 });
+// function Usuario() {
+//   const [usuario, setUsuario] = useState({ nombre: "", edad: 0 });
 
-  const actualizarNombre = (nuevoNombre: string) => {
-    setUsuario((prev) => ({ ...prev, nombre: nuevoNombre }));
-  };
+//   const actualizarNombre = (nuevoNombre: string) => {
+//     setUsuario((prev) => ({ ...prev, nombre: nuevoNombre }));
+//   };
 
-  return (
-    <div>
-      <input
-        value={usuario.nombre}
-        onChange={(e) => actualizarNombre(e.target.value)}
-        placeholder="Nombre"
-      />
-      <p>Edad: {usuario.edad}</p>
-    </div>
-  );
-}
+//   return (
+//     <div>
+//       <input
+//         value={usuario.nombre}
+//         onChange={(e) => actualizarNombre(e.target.value)}
+//         placeholder="Nombre"
+//       />
+//       <p>Edad: {usuario.edad}</p>
+//     </div>
+//   );
+// }
 
 /**
  * Conceptos clave:
@@ -87,13 +86,13 @@ function Usuario() {
  * -------------------------------------------------
  */
 
-function ContadorSeguro() {
-  const [contador, setContador] = useState(0);
+// function ContadorSeguro() {
+//   const [contador, setContador] = useState(0);
 
-  const incrementar = () => setContador((prev) => prev + 1);
+//   const incrementar = () => setContador((prev) => prev + 1);
 
-  return <button onClick={incrementar}>Contador: {contador}</button>;
-}
+//   return <button onClick={incrementar}>Contador: {contador}</button>;
+// }
 
 /**
  * Resumen:
